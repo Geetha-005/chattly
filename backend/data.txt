@@ -1,2 +1,0 @@
-mongodb password:RJX8FT8GBqBw15cH
-user_name:geetachilla4
