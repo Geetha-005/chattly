@@ -7,13 +7,13 @@ import { RxCross2 } from "react-icons/rx";
 import { BiLogOutCircle } from "react-icons/bi";
 import axios from "axios"
 import { serverUrl } from '../main';
-import { setOtherUsers, setUserData } from '../redux/userSlice';
+import { setOtherUsers, setSelectedUser, setUserData } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const SideBar = () => {
 
     let [search,setSearch]=useState(false);
-    let{userData,otherUsers}=useSelector(state=>state.user);
+    let{userData,otherUsers,selectedUser}=useSelector(state=>state.user);
     let dispatch=useDispatch();
     let navigate=useNavigate();
 
@@ -32,7 +32,8 @@ const SideBar = () => {
 
 
   return (
-    <div className='lg:w-[30%] w-full h-full bg-slate-200 '>
+    <div className={`lg:w-[30%] w-full h-full lg:block bg-slate-200 
+    ${!selectedUser? "block":"hidden"}`}>
 
          <div className='w-[60px] h-[60px] rounded-full overflow-hidden
             flex justify-center items-center bg-[#20c7ff] mt-[10px]  shadow-gray-500 shadow-lg
@@ -51,7 +52,7 @@ const SideBar = () => {
             <h1 className='text-white font-semibold text-[25px] '>Chattly</h1>
 
            <div className='w-full flex justify-between items-center'>
-            <h1 className='text-gray-400 font-semibold text-[25px] '>Hi, {userData.name|| "user"}</h1>
+            <h1 className='text-gray-800 font-bold text-[25px] '>Hi, {userData.name|| "user"}</h1>
             <div className='w-[60px] h-[60px] rounded-full overflow-hidden
             flex justify-center bg-white  cursor-pointer items-center shadow-gray-500 shadow-lg'
             onClick={()=>navigate("/profile")}>
@@ -85,7 +86,7 @@ const SideBar = () => {
        </form>
        }
 
-           {otherUsers?.map((user)=>(
+        {!search && otherUsers?.map((user)=>(
             <div className='w-[60px] h-[60px] rounded-full overflow-hidden
             flex justify-center items-center mt-[10px]  shadow-gray-500 shadow-lg'>
 
@@ -95,10 +96,37 @@ const SideBar = () => {
        </div>
 
            ))}
+          
 
          
 
            </div>
+
+
+        </div>
+
+        <div className='w-full h-[60vh] overflow-auto flex 
+        flex-col gap-[20px] items-center mt-[20px]'>
+
+          {otherUsers?.map((user)=>(
+            <div className='w-[95%] h-[70px] flex justify-start
+            items-center gap-[20px] bg-white shadow-gray-500
+            shadow-lg rounded-full hover:bg-[#b2ccdf] cursor-pointer'
+            onClick={()=>dispatch(setSelectedUser(user))}>
+
+            
+            <div className='w-[60px] h-[60px] rounded-full overflow-hidden
+            flex justify-center items-center   shadow-gray-500 shadow-lg'>
+
+            
+       <img src={user.image ||dp} alt="dp" className='h-[100%] '/>
+
+       </div>
+       <h1 className='text-gray-800 font-bold text-[20px] '>{user.name||user.userName}</h1>
+       </div>
+
+           ))}
+
 
 
         </div>
