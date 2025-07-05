@@ -9,6 +9,7 @@ import { store } from './redux/store.js';
 
 export const serverUrl = "https://real-time-chat-application-05.onrender.com";
 
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
