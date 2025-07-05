@@ -28,6 +28,7 @@ const SignUp = () => {
         )
         // console.log(result);
         dispatch(setUserData(result.data));
+        navigate("/profile")
         setEmail("");
         setPassword("");
         setUserName("");
