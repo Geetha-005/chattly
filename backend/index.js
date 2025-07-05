@@ -15,7 +15,7 @@
 
 
 // app.use(cors({
-//     origin:"http://localhost:5173",
+//     origin:"https://chattly-eav1.onrender.com",
 //     credentials:true
 // }))
 // app.use(express.json())
