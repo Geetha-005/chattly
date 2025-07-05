@@ -5,6 +5,7 @@ import connectDB from './config/db.js'
 import authRouter from './routes/auth.routes.js'
 import cors from 'cors'
 import userRouter from './routes/user.routes.js'
+import messageRouter from './routes/message.routes.js'
 dotenv.config()
 
 
@@ -22,7 +23,7 @@ app.use(express.static("public"));
 app.use("/api/auth",authRouter)
 
 app.use("/api/user",userRouter)
-
+app.use("/api/message",messageRouter)
 
 app.listen(port,()=>{
      connectDB();
