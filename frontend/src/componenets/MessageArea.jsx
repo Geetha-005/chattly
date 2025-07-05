@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { MdKeyboardBackspace } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ import { setMessages } from '../redux/messageSlice';
 const MessageArea = () => {
 
    let navigate=useNavigate();
-  let {selectedUser,userData}=useSelector(state=>state.user)
+  let {selectedUser,userData,socket}=useSelector(state=>state.user)
   let {messages}=useSelector(state=>state.message)
   let dispatch=useDispatch();
 
@@ -31,6 +31,9 @@ const MessageArea = () => {
 
       const handleSendmessage=async(e)=>{
         e.preventDefault();
+        if(input.length==0 && backendImage==null){
+          return 
+        }
 
         try{
           let formData=new FormData()
@@ -73,6 +76,14 @@ const MessageArea = () => {
 
   }
 
+  useEffect(()=>{
+    socket.on("newMessage",(mess)=>{
+      dispatch(setMessages([...messages,mess]))
+    })
+    return ()=>socket.off("newMessages");
+
+  },[messages,setMessages])
+
   return (
     <div className={`lg:w-[70%] relative ${selectedUser? "flex":"hidden"} hidden lg:flex  w-full bg-slate-2 h-full border-l-2
      border-gray-300  `}>
@@ -110,7 +121,7 @@ const MessageArea = () => {
                '><EmojiPicker  onEmojiClick={onEmojiClick}
                width={250} height={350} className='shadow-lg '/> </div>  }
 
-            {messages ?.map((mess)=>(
+            {messages && messages.map((mess)=>(
               mess.sender==userData._id ? <SenderMessages  image={mess.image}
               message={mess.message} />: <ReceiverMessages image={mess.image}
               message={mess.message}/>
@@ -140,7 +151,7 @@ const MessageArea = () => {
        
 
         <div onClick={()=>setShowPicker(prev=>!prev)}>
-          <GrEmoji className='cursor-pointer w-[25px] h-[25px] text-white' />
+          <GrEmoji className='z-[100px] cursor-pointer w-[25px] h-[25px] text-white' />
         </div>
         <input type="file" accept='image/*' hidden ref={image} 
         onChange={handleImage}/>
@@ -156,9 +167,11 @@ const MessageArea = () => {
 
 
         </div>  
+        {input.length>0 && backendImage!=null &&( 
          <button>
             <LuSendHorizontal  className='cursor-pointer w-[25px] h-[25px] text-white'/>
-        </button>
+        </button>)
+}
 
       </form>
       </div>

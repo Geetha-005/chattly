@@ -52,7 +52,7 @@ const SideBar = () => {
             <h1 className='text-white font-semibold text-[25px] '>Chattly</h1>
 
            <div className='w-full flex justify-between items-center'>
-            <h1 className='text-gray-800 font-bold text-[25px] '>Hi, {userData.name|| "user"}</h1>
+            <h1 className='text-gray-800 font-bold text-[25px] '>Hi, {userData.userName|| "user"}</h1>
             <div className='w-[60px] h-[60px] rounded-full overflow-hidden
             flex justify-center bg-white  cursor-pointer items-center shadow-gray-500 shadow-lg'
             onClick={()=>navigate("/profile")}>
